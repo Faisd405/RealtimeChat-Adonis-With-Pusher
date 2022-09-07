@@ -13,33 +13,34 @@ export default class AuthController {
     try {
       await request.validate(UserValidator)
 
-      const verificationCode: string =
-        Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+      // const verificationCode: string =
+      //   Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
       const user = await User.create({
         name: request.input('name'),
         email: request.input('email'),
         password: request.input('password'),
         role_id: 2,
-        verification_code: verificationCode,
+        // verification_code: verificationCode,
+        isVerified: true,
       })
 
-      const completeUrl = request.completeUrl()
-      const url = completeUrl.split('/')
-      const protocol = url[0]
-      const domain = url[2]
+      // const completeUrl = request.completeUrl()
+      // const url = completeUrl.split('/')
+      // const protocol = url[0]
+      // const domain = url[2]
 
-      await Mail.send((message) => {
-        message
-          .from(Env.get('MAIL_FROM_ADDRESS'))
-          .to(user.email)
-          .subject('Verify your email')
-          .htmlView('email/verification', {
-            verificationCode: verificationCode,
-            domain: domain,
-            protocol: protocol,
-          })
-      })
+      // await Mail.send((message) => {
+      //   message
+      //     .from(Env.get('MAIL_FROM_ADDRESS'))
+      //     .to(user.email)
+      //     .subject('Verify your email')
+      //     .htmlView('email/verification', {
+      //       verificationCode: verificationCode,
+      //       domain: domain,
+      //       protocol: protocol,
+      //     })
+      // })
 
       response.created({
         message: 'Register Successfully',
@@ -50,7 +51,7 @@ export default class AuthController {
         },
       })
     } catch (error) {
-      return response.status(422).json({ errors: error.messages })
+      return response.status(422).json({ errors: error })
     }
   }
 

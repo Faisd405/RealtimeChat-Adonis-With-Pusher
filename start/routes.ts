@@ -25,3 +25,4 @@ Route.get('/', async () => {
 })
 
 import './Routes/Auth/authRoute'
+import './Routes/message/messageRoute'
